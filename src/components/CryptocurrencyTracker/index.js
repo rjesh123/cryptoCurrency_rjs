@@ -23,19 +23,20 @@ class CryptocurrencyTracker extends Component {
     const data = await response.json()
     console.log(data)
 
-    const updatedData = {
-      currencyLogo: data.currency_logo,
-      currencyName: data.currency_name,
-      euroValue: data.euro_value,
-      usdValue: data.usd_value,
-      id: data.id,
-    }
+    const updatedData = data.map(eachData => ({
+      currencyLogo: eachData.currency_logo,
+      currencyName: eachData.currency_name,
+      euroValue: eachData.euro_value,
+      usdValue: eachData.usd_value,
+      id: eachData.id,
+    }))
 
     this.setState({cryptoCurrencyData: updatedData, isLoading: false})
   }
 
   renderCryptoCurrencyApp = () => {
     const {cryptoCurrencyData} = this.state
+    console.log(cryptoCurrencyData)
 
     return <CryptocurrenciesList cryptoCurrencyData={cryptoCurrencyData} />
   }
@@ -45,7 +46,9 @@ class CryptocurrencyTracker extends Component {
     return (
       <div className="app-container">
         {isLoading ? (
-          <Loader type="TailSpin" color="#00BFFF" height={50} width={50} />
+          <div data-testid="loader">
+            <Loader type="Rings" color="#ffffff" height={80} width={80} />
+          </div>
         ) : (
           this.renderCryptoCurrencyApp()
         )}
